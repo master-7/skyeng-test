@@ -21,6 +21,19 @@ class WordEngQuery extends \yii\db\ActiveQuery
     }
 
     /**
+     * @param $id
+     * @return $this
+     */
+    public function withNotId($id)
+    {
+        return $this->andWhere([
+            "<>",
+            "id",
+            $id
+        ]);
+    }
+
+    /**
      * @inheritdoc
      * @return \app\models\WordEng[]|array
      */

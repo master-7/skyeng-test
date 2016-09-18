@@ -13,6 +13,17 @@ class WordRuQuery extends \yii\db\ActiveQuery
      * @param $id
      * @return $this
      */
+    public function withId($id)
+    {
+        return $this->andWhere([
+            "id" => $id
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return $this
+     */
     public function withNotId($id)
     {
         return $this->andWhere([

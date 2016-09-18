@@ -2,10 +2,10 @@
 
 namespace app\controllers;
 
-use app\models\WordRu;
 use Yii;
+use app\models\WordRu;
 use app\models\WordEng;
-use yii\rest\Controller;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 use yii\db\Expression;
