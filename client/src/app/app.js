@@ -10,12 +10,14 @@ import routing from './config/app.config';
 
 //Import modules
 import greeting from './modules/greeting';
+import test from './modules/test';
 
 import error404 from './modules/errors/404';
 
 let modules = [
 	//Modules
 	greeting,
+	test,
 	error404
 ];
 
