@@ -5,6 +5,11 @@ class WordRuService {
 		this.wordRuRequest = $resource('http://localhost:8888/wordru/index/:id',
 			{
 				id: '@id'
+			},
+			{
+				'query':  {
+					method:'GET', isArray: false
+				}
 			}
 		);
 	}

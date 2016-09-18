@@ -1,6 +1,39 @@
 body {
     margin: 10px;
 }
+
 #greeting, #start-test {
     text-align: center;
+}
+
+md-grid-list {
+    margin: 8px;
+}
+
+.gray {
+    background: #f5f5f5;
+}
+
+.green {
+    background: #b9f6ca;
+}
+
+.yellow {
+    background: #ffff8d;
+}
+
+.blue {
+    background: #84ffff;
+}
+
+.purple {
+    background: #b388ff;
+}
+
+.red {
+    background: #ff8a80;
+}
+
+.pointer {
+    cursor: pointer;
 }
