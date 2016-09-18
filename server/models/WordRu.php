@@ -16,6 +16,11 @@ use Yii;
 class WordRu extends \yii\db\ActiveRecord
 {
     /**
+     * Validate constant
+     */
+    const WORD_MAX_LENGTH = 255;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -30,7 +35,7 @@ class WordRu extends \yii\db\ActiveRecord
     {
         return [
             [['word'], 'required'],
-            [['word'], 'string', 'max' => 255],
+            [['word'], 'string', 'max' => self::WORD_MAX_LENGTH],
         ];
     }
 

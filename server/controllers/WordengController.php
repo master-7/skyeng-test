@@ -16,6 +16,12 @@ use yii\db\Expression;
 class WordengController extends Controller
 {
     /**
+     * Useful constant
+     */
+    const LIMIT_NOT_CORRECT_ANSWER = 3;
+    const LIMIT_WRITE_ANSWER = 1;
+
+    /**
      * Return word and transfer if params $id not null
      * Return random word and four variant transfer if $id is null
      * @param null $id
@@ -37,14 +43,14 @@ class WordengController extends Controller
             $word = WordEng::find()
                 ->orderBy(new Expression('rand()'))
                 ->with('rus')
-                ->limit(1)
+                ->limit(self::LIMIT_WRITE_ANSWER)
                 ->asArray()
                 ->one();
 
             $transfer = array_merge(
                 WordRu::find()
                     ->withNotId($word['id'])
-                    ->limit(3)
+                    ->limit(self::LIMIT_NOT_CORRECT_ANSWER)
                     ->asArray()
                     ->all(),
                 $word["rus"]

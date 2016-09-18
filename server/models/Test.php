@@ -14,6 +14,11 @@ use Yii;
 class Test extends \yii\db\ActiveRecord
 {
     /**
+     * Validate constant
+     */
+    const USERNAME_MAX_LENGTH = 255;
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -29,7 +34,7 @@ class Test extends \yii\db\ActiveRecord
         return [
             [['username', 'evaluation'], 'required'],
             [['evaluation'], 'integer'],
-            [['username'], 'string', 'max' => 255],
+            [['username'], 'string', 'max' => self::USERNAME_MAX_LENGTH],
         ];
     }
 
