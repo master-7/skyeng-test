@@ -16,7 +16,7 @@ class m160918_144229_create_test_table extends Migration
             [
                 'id' => $this->primaryKey() . " AUTO_INCREMENT",
                 'username' => $this->string()->notNull(),
-                'evaluation' => $this->integer(2)->notNull()
+                'evaluation' => $this->integer(2)
             ],
             "ENGINE=InnoDB DEFAULT CHARSET=UTF8"
         );

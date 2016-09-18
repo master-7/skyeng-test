@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Test;
+use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -13,15 +14,31 @@ use yii\web\NotFoundHttpException;
  */
 class TestController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'index'  => ['get', 'put', 'post', 'options']
+                ],
+            ],
+        ];
+    }
+
     /**
      * REST method switch action depending on the HTTP method
      * @param $id
      * @return string
      * @throws BadRequestHttpException
      */
-    public function actionIndex($id)
+    public function actionIndex($id = null)
     {
         switch ($_SERVER['REQUEST_METHOD']) {
+            case 'OPTIONS':
+                header('Access-Control-Allow-Methods : POST, GET, OPTIONS, PUT');
+                return true;
+                break;
             case 'GET':
                 return $this->actionView($id);
                 break;
@@ -32,8 +49,9 @@ class TestController extends Controller
                 return $this->actionUpdate($id);
                 break;
         }
-        throw new BadRequestHttpException("Bad HTTP method!");
+        throw new BadRequestHttpException("Not allow {$_SERVER['REQUEST_METHOD']} method!");
     }
+
     /**
      * View the test by $id
      * @param $id
@@ -56,7 +74,7 @@ class TestController extends Controller
     {
         $model = new Test();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(["Test" => Yii::$app->request->post()]) && $model->save()) {
             return json_encode([
                 "id" => $model->id
             ]);
@@ -76,7 +94,7 @@ class TestController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(["Test" => Yii::$app->request->post()]) && $model->save()) {
             return true;
         } else {
             throw new BadRequestHttpException("Bad params");

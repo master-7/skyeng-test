@@ -32,7 +32,7 @@ class Test extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'evaluation'], 'required'],
+            [['username'], 'required'],
             [['evaluation'], 'integer'],
             [['username'], 'string', 'max' => self::USERNAME_MAX_LENGTH],
         ];

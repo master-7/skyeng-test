@@ -7,7 +7,7 @@ class TestService {
                 id: '@id'
             },
             {
-                'query': { method:'GET', isArray:false },
+                'query': { method: 'GET', isArray:false },
                 'save': { method: 'POST' },
                 'update': { method: 'PUT' }
             }

@@ -9,6 +9,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+            'enableCsrfValidation' => false,
             'cookieValidationKey' => 'KCrBOrvJuzYCKQxsZlrj9TfB-FFX404L',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',

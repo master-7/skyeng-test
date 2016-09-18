@@ -3,10 +3,22 @@
     <p>
         Проверьте свои знания английского языка в виде теста.
     </p>
-    <p>
-        В конце мы скажем результаты и поставим оценку!
-    </p>
-    <md-button ng-href="/test" class="md-raised md-primary">
-        Начать тест!
-    </md-button>
+    <form name="startTheTest" ng-submit="vm.startTest()" class="md-padding" layout="column">
+        <md-input-container>
+            <label>
+                Представьтесь, пожалуйста
+            </label>
+            <input autocomplete="off" required id="name" name="name"
+                   ng-maxlength="{{vm.nameMaxLength}}"
+                   ng-model="vm.username">
+
+            <div ng-messages="startTheTest.name.$error">
+                <div ng-message="required">Обязательное поле!</div>
+                <div ng-message="maxlength">Не больше {{vm.nameMaxLength}} символов</div>
+            </div>
+        </md-input-container>
+        <md-button type="submit" class="md-raised md-primary">
+            Начать тест!
+        </md-button>
+    </form>
 </div>
