@@ -9,10 +9,18 @@ namespace app\models\query;
  */
 class WordRuQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    /**
+     * @param $id
+     * @return $this
+     */
+    public function withNotId($id)
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this->andWhere([
+            "<>",
+            "id",
+            $id
+        ]);
+    }
 
     /**
      * @inheritdoc

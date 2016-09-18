@@ -2,12 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\WordRu;
 use Yii;
 use app\models\WordEng;
-use app\models\search\WordEngSearch;
-use yii\web\Controller;
+use yii\rest\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+
+use yii\db\Expression;
 
 /**
  * WordengController implements the CRUD actions for WordEng model.
@@ -15,95 +16,52 @@ use yii\filters\VerbFilter;
 class WordengController extends Controller
 {
     /**
-     * @inheritdoc
+     * Return word and transfer if params $id not null
+     * Return random word and four variant transfer if $id is null
+     * @param null $id
+     * @return string
      */
-    public function behaviors()
+    public function actionIndex($id = null)
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+        if($id) {
+            return json_encode(
+                WordEng::find()
+                    ->withId($id)
+                    ->with('rus')
+                    ->asArray()
+                    ->all(),
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+        else {
+            $word = WordEng::find()
+                ->orderBy(new Expression('rand()'))
+                ->with('rus')
+                ->limit(1)
+                ->asArray()
+                ->one();
+
+            $transfer = array_merge(
+                WordRu::find()
+                    ->withNotId($word['id'])
+                    ->limit(3)
+                    ->asArray()
+                    ->all(),
+                $word["rus"]
+            );
+
+            shuffle($transfer);
+
+            unset($word["rus"]);
+
+            return json_encode(
+                [
+                    "word" => $word,
+                    "transfer" => $transfer
                 ],
-            ],
-        ];
-    }
-
-    /**
-     * Lists all WordEng models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new WordEngSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single WordEng model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new WordEng model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new WordEng();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+                JSON_UNESCAPED_UNICODE
+            );
         }
-    }
-
-    /**
-     * Updates an existing WordEng model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing WordEng model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

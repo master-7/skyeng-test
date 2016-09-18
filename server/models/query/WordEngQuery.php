@@ -9,10 +9,16 @@ namespace app\models\query;
  */
 class WordEngQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    /**
+     * @param $id
+     * @return $this
+     */
+    public function withId($id)
     {
-        return $this->andWhere('[[status]]=1');
-    }*/
+        return $this->andWhere([
+            "id" => $id
+        ]);
+    }
 
     /**
      * @inheritdoc
