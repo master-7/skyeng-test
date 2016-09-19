@@ -60,6 +60,7 @@ export default class RuController {
 	 * @param element
 	 */
 	correctAnswer (id, testId, element) {
+		element.removeClass("blue").addClass("green");
 		let passedWords = JSON.parse(
 			this.$sessionStorage.get(STORAGE_PASSED_WORDS_NAME)
 		);
@@ -77,7 +78,7 @@ export default class RuController {
 				JSON.stringify(passedWords)
 			);
 		}
-		element.removeClass("blue").addClass("green");
+
 		$(".pointer").removeClass("red green").addClass("blue");
 
 		this.testResource.update({id: testId}).$promise.then(
@@ -88,17 +89,24 @@ export default class RuController {
 					(data) => {
 						if(data.word)
 							this.words = data;
-						else
-							this.$mdDialog.show(
-								this.$mdDialog.alert()
-									.clickOutsideToClose(true)
-									.title('Готово!')
-									.textContent(`Конец!`)
-									.ok('Повторить')
-							).
-							then(() => {
-								this.$state.go('greetings');
-							});
+						else {
+							this.testResource.query(
+								{
+									id: testId
+								},
+								(data) => {
+									this.$mdDialog.show(
+										this.$mdDialog.alert()
+											.clickOutsideToClose(true)
+											.title('Готово!')
+											.textContent(`Вы набрали ${data.evaluation} баллов!`)
+											.ok('Повторить')
+									).then(() => {
+										this.$state.go('greetings');
+									});
+								}
+							);
+						}
 						return;
 					}
 				);
@@ -146,18 +154,28 @@ export default class RuController {
 				},
 			);
 			if(failAnswer.length > CONSTANTS.COUNT_FAIL_ANSWERS) {
-				this.$mdDialog.show(
-					this.$mdDialog.alert()
-						.clickOutsideToClose(true)
-						.title('Провал...')
-						.textContent(
-							`Вы ошиблись больше ${CONSTANTS.COUNT_FAIL_ANSWERS} раз, попробуйте еще раз!`
-						)
-						.ok('Повторить')
-				).
-				then(() => {
-					this.$state.go('greetings');
-				});
+				this.testResource.query(
+					{
+						id: testId
+					},
+					(data) => {
+						console.log(data);
+
+						this.$mdDialog.show(
+							this.$mdDialog.alert()
+								.clickOutsideToClose(true)
+								.title('Провал...')
+								.textContent(
+									`Вы ошиблись больше ${CONSTANTS.COUNT_FAIL_ANSWERS} раз,
+									набрали ${data.evaluation} баллов, попробуйте еще раз!`
+								)
+								.ok('Повторить')
+						).
+						then(() => {
+							this.$state.go('greetings');
+						});
+					}
+				);
 				return;
 			}
 		}
