@@ -2,7 +2,7 @@ import angular from 'angular';
 
 class WordRuService {
 	constructor($resource) {
-		this.wordRuRequest = $resource('http://localhost:8888/wordru/index/:id?passed',
+		this.wordRuRequest = $resource('http://localhost:8888/wordru/index/:id',
 			{
 				id: '@id',
 				passed: '@passed'

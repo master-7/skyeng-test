@@ -34,6 +34,19 @@ class WordRuQuery extends \yii\db\ActiveQuery
     }
 
     /**
+     * @param array $ids
+     * @return $this
+     */
+    public function withNotInIds(Array $ids)
+    {
+        return $this->andWhere([
+            "NOT IN",
+            "id",
+            $ids
+        ]);
+    }
+
+    /**
      * @inheritdoc
      * @return \app\models\WordRu[]|array
      */

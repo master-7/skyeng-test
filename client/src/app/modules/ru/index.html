@@ -13,7 +13,7 @@
 
     <md-grid-tile
             ng-repeat="word in vm.words.transfer track by $index"
-            ng-click="vm.answer($event, word.id, $index)"
+            ng-click="vm.answerEventHandler($event, word.id, $index)"
             class="blue pointer">
         {{word.word}}
     </md-grid-tile>

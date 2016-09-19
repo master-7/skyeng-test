@@ -41,16 +41,23 @@ class WordruController extends Controller
             );
         }
         else {
-            $word = WordRu::find()
+            $query = $passed ?
+                WordRu::find()->withNotInIds(json_decode($passed)) :
+                WordRu::find();
+
+            $word = $query
                 ->orderBy(new Expression('rand()'))
                 ->with('engs')
                 ->limit(self::LIMIT_WRITE_ANSWER)
                 ->asArray()
                 ->one();
 
+            if(!$word["engs"])
+                return null;
+
             $transfer = array_merge(
                 WordEng::find()
-                    ->withNotId($word['id'])
+                    ->withNotId($word["engs"][0]["id"])
                     ->limit(self::LIMIT_NOT_CORRECT_ANSWER)
                     ->asArray()
                     ->all(),

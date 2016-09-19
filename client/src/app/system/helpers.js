@@ -22,6 +22,7 @@ export default class Helpers {
      */
     static clearSystemData ($cookies, $sessionStorage) {
         $cookies.remove("test-id");
+        $sessionStorage.remove("passed-words");
         $sessionStorage.remove("fail-answer");
         $sessionStorage.remove("fail-answer-id");
     }

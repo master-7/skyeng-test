@@ -39,7 +39,7 @@ class m160918_103422_fill_data extends Migration
             ["id", "word"],
             [
                 [1, "apple"],
-                [2, "pear"],
+                [2, "peach"],
                 [3, "orange"],
                 [4, "grape"],
                 [5, "lemon"],
@@ -53,7 +53,7 @@ class m160918_103422_fill_data extends Migration
                 [13, "mellon"],
                 [14, "apricot"],
                 [15, "mango"],
-                [16, "pear"],
+                [16, "plum"],
                 [17, "pomegranate"],
                 [18, "cherry"],
             ]
