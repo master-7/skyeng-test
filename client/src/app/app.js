@@ -16,8 +16,8 @@ import routing from './config/app.config';
 //Import modules
 import greeting from './modules/greeting';
 import test from './modules/test';
-import testRu from './modules/ru';
-import testEng from './modules/eng';
+import testRu from './modules/test_ru';
+import testEng from './modules/test_eng';
 
 import error404 from './modules/errors/404';
 import errorUndefined from './modules/errors/undefined';

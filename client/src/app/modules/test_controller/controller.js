@@ -6,19 +6,19 @@ const STORAGE_FAIL_ANSWER_NAME = "fail-answer";
 const STORAGE_FAIL_ANSWER_IDENTITY_NAME = "fail-answer-id";
 const STORAGE_PASSED_WORDS_NAME = "passed-words";
 
-export default class RuController {
-	constructor($state, $cookies, $sessionStorage, $mdDialog, $mdToast, WordRuService, FailAnswerService, TestService) {
+export default class TestController {
+	constructor($state, $cookies, $sessionStorage, $mdDialog, $mdToast, WordService, FailAnswerService, TestService) {
 		this.$mdDialog = $mdDialog;
 		this.$mdToast = $mdToast;
 		this.$cookies = $cookies;
 		this.$sessionStorage = $sessionStorage;
 		this.$state = $state;
 
-		this.wordRuResource = WordRuService.getResource();
+		this.wordResource = WordService.getResource();
 		this.failAnswerResource = FailAnswerService.getResource();
 		this.testResource = TestService.getResource();
 
-		this.wordRuResource.query().$promise.then(
+		this.wordResource.query().$promise.then(
 			(data) => {
 				this.words = data;
 			}
@@ -37,7 +37,7 @@ export default class RuController {
 				"word": this.words.word.word,
 				"selected": this.words.transfer[index].word
 			};
-			this.wordRuResource.query({id: id}).$promise.then(
+			this.wordResource.query({id: id}).$promise.then(
 				(data) => {
 					let testId = this.$cookies.get('test-id');
 					let failAnswer = JSON.parse(this.$sessionStorage.get(STORAGE_FAIL_ANSWER_NAME));
@@ -79,11 +79,11 @@ export default class RuController {
 			);
 		}
 
-		$(".pointer").removeClass("red green").addClass("blue");
+		$(".red, .green").removeClass("red green").addClass("blue");
 
 		this.testResource.update({id: testId}).$promise.then(
 			(data) => {
-				this.wordRuResource.query({
+				this.wordResource.query({
 					"passed": JSON.stringify(passedWords)
 				}).$promise.then(
 					(data) => {
@@ -187,9 +187,3 @@ export default class RuController {
 		);
 	}
 }
-
-RuController.$inject = [
-	'$state', '$cookies', '$sessionStorage',
-	'$mdDialog', '$mdToast', 'WordRuService',
-	'FailAnswerService', 'TestService'
-];
