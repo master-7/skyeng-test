@@ -5,7 +5,7 @@ import routing from './route';
 
 import '../../../../style/error.css';
 
-const BOOKS_MODULE_NAME = 'app.error404';
+const BOOKS_MODULE_NAME = 'app.errorUndefined';
 
 export default angular.module(BOOKS_MODULE_NAME, [uiRouter])
 	.config(routing)

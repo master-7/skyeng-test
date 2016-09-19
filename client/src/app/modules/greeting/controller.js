@@ -1,5 +1,8 @@
 export default class GreetingController {
-	constructor(TestService) {
+	constructor($location, $cookies, TestService) {
+		this.$location = $location;
+		this.$cookies = $cookies;
+
 		this.nameMaxLength = 255;
 		this.username = "";
 
@@ -11,16 +14,15 @@ export default class GreetingController {
 			{
 				"username": this.username
 			},
-			function (data) {
-				console.log("Good");
-				console.log(data);
+			(data) => {
+				this.$cookies.put("test-id", data.id);
+				this.$location.path("/test");
 			},
-			function (error) {
-				console.log("Bad");
-				console.log(error);
+			(error) => {
+				this.$location.path("/error");
 			}
 		);
 	}
 }
 
-GreetingController.$inject = ['TestService'];
+GreetingController.$inject = ['$location', '$cookies', 'TestService'];
