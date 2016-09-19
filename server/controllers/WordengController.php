@@ -25,9 +25,10 @@ class WordengController extends Controller
      * Return word and transfer if params $id not null
      * Return random word and four variant transfer if $id is null
      * @param null $id
-     * @return string
+     * @param null $passed
+     * @return null|string
      */
-    public function actionIndex($id = null)
+    public function actionIndex($id = null, $passed = null)
     {
         if($id) {
             return json_encode(
@@ -40,16 +41,23 @@ class WordengController extends Controller
             );
         }
         else {
-            $word = WordEng::find()
+            $query = $passed ?
+                WordEng::find()->withNotInIds(json_decode($passed)) :
+                WordEng::find();
+
+            $word = $query
                 ->orderBy(new Expression('rand()'))
                 ->with('rus')
                 ->limit(self::LIMIT_WRITE_ANSWER)
                 ->asArray()
                 ->one();
 
+            if(!$word["rus"])
+                return null;
+
             $transfer = array_merge(
                 WordRu::find()
-                    ->withNotId($word['id'])
+                    ->withNotId($word["rus"][0]["id"])
                     ->limit(self::LIMIT_NOT_CORRECT_ANSWER)
                     ->asArray()
                     ->all(),
