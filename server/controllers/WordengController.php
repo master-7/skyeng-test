@@ -36,7 +36,7 @@ class WordengController extends Controller
                     ->withId($id)
                     ->with('rus')
                     ->asArray()
-                    ->all(),
+                    ->one(),
                 JSON_UNESCAPED_UNICODE
             );
         }

@@ -4,7 +4,13 @@ class WordEngService {
 	constructor($resource) {
 		this.wordEngRequest = $resource('http://localhost:8888/wordeng/index/:id',
 			{
-				id: '@id'
+				id: '@id',
+				passed: '@passed'
+			},
+			{
+				'query':  {
+					method: 'GET', isArray: false
+				}
 			}
 		);
 	}

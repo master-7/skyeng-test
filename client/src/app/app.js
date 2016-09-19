@@ -17,6 +17,7 @@ import routing from './config/app.config';
 import greeting from './modules/greeting';
 import test from './modules/test';
 import testRu from './modules/ru';
+import testEng from './modules/eng';
 
 import error404 from './modules/errors/404';
 import errorUndefined from './modules/errors/undefined';
@@ -26,6 +27,7 @@ let modules = [
 	greeting,
 	test,
 	testRu,
+	testEng,
 	error404,
 	errorUndefined
 ];
