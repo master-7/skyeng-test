@@ -60,7 +60,7 @@ class TestController extends Controller
     public function actionView($id)
     {
         return json_encode(
-            $this->findModel($id)
+            $this->findModel($id)->attributes
         );
     }
 
@@ -94,11 +94,16 @@ class TestController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(["Test" => Yii::$app->request->post()]) && $model->save()) {
-            return true;
-        } else {
-            throw new BadRequestHttpException("Bad params");
+        if($model->evaluation) {
+            if($model->updateCounters(['evaluation' => 1]))
+                return true;
         }
+        else {
+            $model->evaluation = 1;
+            if($model->save())
+                return true;
+        }
+        throw new BadRequestHttpException("Bad params");
     }
 
     /**

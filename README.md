@@ -6,6 +6,9 @@ $ cd server
 # install the dependencies with composer
 $ composer install
 
+# After fix config/db.php and run migration
+./yii migrate
+
 # Run the server
 $ php yii serve --port=8888
 

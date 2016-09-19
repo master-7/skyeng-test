@@ -7,7 +7,7 @@ const STORAGE_FAIL_ANSWER_IDENTITY_NAME = "fail-answer-id";
 const STORAGE_PASSED_WORDS_NAME = "passed-words";
 
 export default class RuController {
-	constructor($state, $cookies, $sessionStorage, $mdDialog, $mdToast, WordRuService, FailAnswerService) {
+	constructor($state, $cookies, $sessionStorage, $mdDialog, $mdToast, WordRuService, FailAnswerService, TestService) {
 		this.$mdDialog = $mdDialog;
 		this.$mdToast = $mdToast;
 		this.$cookies = $cookies;
@@ -16,6 +16,7 @@ export default class RuController {
 
 		this.wordRuResource = WordRuService.getResource();
 		this.failAnswerResource = FailAnswerService.getResource();
+		this.testResource = TestService.getResource();
 
 		this.wordRuResource.query().$promise.then(
 			(data) => {
@@ -45,7 +46,7 @@ export default class RuController {
 						this.notCorrectAnswer(element, testId, failAnswer, errorData);
 					}
 					else {
-						this.correctAnswer(id, element);
+						this.correctAnswer(id, testId, element);
 					}
 				}
 			);
@@ -54,9 +55,11 @@ export default class RuController {
 
 	/**
 	 * If the user has made the right choice
+	 * @param id
+	 * @param testId
 	 * @param element
 	 */
-	correctAnswer (id, element) {
+	correctAnswer (id, testId, element) {
 		let passedWords = JSON.parse(
 			this.$sessionStorage.get(STORAGE_PASSED_WORDS_NAME)
 		);
@@ -76,24 +79,29 @@ export default class RuController {
 		}
 		element.removeClass("blue").addClass("green");
 		$(".pointer").removeClass("red green").addClass("blue");
-		this.wordRuResource.query({
-			"passed": JSON.stringify(passedWords)
-		}).$promise.then(
+
+		this.testResource.update({id: testId}).$promise.then(
 			(data) => {
-				if(data.word)
-					this.words = data;
-				else
-					this.$mdDialog.show(
-						this.$mdDialog.alert()
-							.clickOutsideToClose(true)
-							.title('Готово!')
-							.textContent(`Конец!`)
-							.ok('Повторить')
-					).
-					then(() => {
-						this.$state.go('greetings');
-					});
-				return;
+				this.wordRuResource.query({
+					"passed": JSON.stringify(passedWords)
+				}).$promise.then(
+					(data) => {
+						if(data.word)
+							this.words = data;
+						else
+							this.$mdDialog.show(
+								this.$mdDialog.alert()
+									.clickOutsideToClose(true)
+									.title('Готово!')
+									.textContent(`Конец!`)
+									.ok('Повторить')
+							).
+							then(() => {
+								this.$state.go('greetings');
+							});
+						return;
+					}
+				);
 			}
 		);
 	}
@@ -142,7 +150,9 @@ export default class RuController {
 					this.$mdDialog.alert()
 						.clickOutsideToClose(true)
 						.title('Провал...')
-						.textContent(`Вы ошиблись больше ${CONSTANTS.COUNT_FAIL_ANSWERS} раз, попробуйте еще раз!`)
+						.textContent(
+							`Вы ошиблись больше ${CONSTANTS.COUNT_FAIL_ANSWERS} раз, попробуйте еще раз!`
+						)
 						.ok('Повторить')
 				).
 				then(() => {
@@ -160,4 +170,8 @@ export default class RuController {
 	}
 }
 
-RuController.$inject = ['$state', '$cookies', '$sessionStorage', '$mdDialog', '$mdToast', 'WordRuService', 'FailAnswerService'];
+RuController.$inject = [
+	'$state', '$cookies', '$sessionStorage',
+	'$mdDialog', '$mdToast', 'WordRuService',
+	'FailAnswerService', 'TestService'
+];
