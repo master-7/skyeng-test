@@ -3,6 +3,7 @@ import angularMaterial from 'angular-material';
 import uiRouter from 'angular-ui-router';
 import ngResource from 'angular-resource';
 import ngCookies from 'angular-cookies';
+import ngSessionStorage from 'angular-sessionstorage';
 
 import 'angular-material/angular-material.css';
 import '../style/app.css';
@@ -34,15 +35,16 @@ let systemModules = [
 	angularMaterial,
 	uiRouter,
 	ngResource,
-	ngCookies
+	ngCookies,
+	ngSessionStorage
 ];
 
 const MODULE_NAME = 'app';
 
 angular.module(MODULE_NAME, systemModules.concat(modules))
 	.config(routing)
-	.run(function ($rootScope, $state, $mdToast, $cookies) {
-		Helpers.clearSystemCookie($cookies);
+	.run(function ($rootScope, $state, $mdToast, $cookies, $sessionStorage) {
+		Helpers.clearSystemData($cookies, $sessionStorage);
 
 		$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
 			switch (error) {

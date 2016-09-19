@@ -10,9 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FailAnswerController implements the CRUD actions for FailAnswer model.
+ * FailanswerController implements the CRUD actions for FailAnswer model.
  */
-class FailAnswerController extends Controller
+class FailanswerController extends Controller
 {
     public function behaviors()
     {
@@ -20,7 +20,7 @@ class FailAnswerController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'index'  => [ 'options', 'post', 'put']
+                    'index'  => ['options', 'post', 'put']
                 ],
             ],
         ];
@@ -50,39 +50,35 @@ class FailAnswerController extends Controller
     }
 
     /**
-     * Creates a new FailAnswer model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * Creates a new FailAnswer model
+     * @return \yii\web\Response
+     * @throws BadRequestHttpException
      */
     public function actionCreate()
     {
         $model = new FailAnswer();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(["FailAnswer" => Yii::$app->request->post()]) && $model->save()) {
+            return json_encode(['id' => $model->id]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            throw new BadRequestHttpException("Bad params");
         }
     }
 
     /**
-     * Updates an existing FailAnswer model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
+     * Updates an existing FailAnswer model
+     * @param $id
+     * @return string
+     * @throws BadRequestHttpException
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(["FailAnswer" => Yii::$app->request->post()]) && $model->save()) {
+            return json_encode(['id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            throw new BadRequestHttpException("Bad params");
         }
     }
 

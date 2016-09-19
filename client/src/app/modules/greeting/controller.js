@@ -1,11 +1,11 @@
 import Helpers from '../../system/helpers';
 
 export default class GreetingController {
-	constructor($location, $cookies, TestService) {
+	constructor($location, $cookies, $sessionStorage, TestService) {
 		this.$location = $location;
 		this.$cookies = $cookies;
 
-		Helpers.clearSystemCookie($cookies);
+		Helpers.clearSystemData($cookies, $sessionStorage);
 
 		this.nameMaxLength = 255;
 		this.username = "";
@@ -29,4 +29,4 @@ export default class GreetingController {
 	}
 }
 
-GreetingController.$inject = ['$location', '$cookies', 'TestService'];
+GreetingController.$inject = ['$location', '$cookies', '$sessionStorage', 'TestService'];

@@ -18,8 +18,11 @@ export default class Helpers {
 
     /**
      * @param $cookies
+     * @param $sessionStorage
      */
-    static clearSystemCookie ($cookies) {
+    static clearSystemData ($cookies, $sessionStorage) {
         $cookies.remove("test-id");
+        $sessionStorage.remove("fail-answer");
+        $sessionStorage.remove("fail-answer-id");
     }
 }
