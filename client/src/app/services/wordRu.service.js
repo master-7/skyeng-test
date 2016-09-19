@@ -2,13 +2,14 @@ import angular from 'angular';
 
 class WordRuService {
 	constructor($resource) {
-		this.wordRuRequest = $resource('http://localhost:8888/wordru/index/:id',
+		this.wordRuRequest = $resource('http://localhost:8888/wordru/index/:id?passed',
 			{
-				id: '@id'
+				id: '@id',
+				passed: '@passed'
 			},
 			{
 				'query':  {
-					method:'GET', isArray: false
+					method: 'GET', isArray: false
 				}
 			}
 		);

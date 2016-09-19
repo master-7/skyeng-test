@@ -11,9 +11,11 @@
         </md-grid-tile-footer>
     </md-grid-tile>
 
-    <md-grid-tile ng-repeat="word in vm.words.transfer track by $index" class="{{vm.getRandomColor()}} pointer">
+    <md-grid-tile
+            ng-repeat="word in vm.words.transfer track by $index"
+            ng-click="vm.answer($event, word.id)"
+            class="blue pointer">
         {{word.word}}
-        <md-grid-tile-footer> # {{$index}}</md-grid-tile-footer>
     </md-grid-tile>
 
 </md-grid-list>

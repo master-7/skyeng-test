@@ -1,32 +1,32 @@
+import $ from "jquery";
+
 export default class RuController {
 	constructor(WordRuService) {
-		WordRuService.getResource().query().$promise.then(
+		this.wordRuResource = WordRuService.getResource();
+		this.wordRuResource.query().$promise.then(
 			(data) => {
 				this.words = data;
 			}
 		);
+
+		this.clickedElements = [];
 	}
 
-	getRandomColor() {
-		let color = [
-			"green",
-			"yellow",
-			"blue",
-			"purple",
-			"red"
-		];
-
-		let colorClass = color[
-			Math.floor(Math.random()*color.length)
-		];
-
-		while(document.querySelector("." + colorClass)) {
-			colorClass = color[
-				Math.floor(Math.random()*color.length)
-			];
+	answer ($event, id) {
+		if(this.clickedElements.indexOf(id) == -1) {
+			let element = $($event.target).parent();
+			this.wordRuResource.query({id: id}).$promise.then(
+				(data) => {
+					if (data.word != this.words.word.word) {
+						element.removeClass("blue").addClass("red");
+					}
+					else {
+						element.removeClass("blue").addClass("green");
+					}
+				}
+			);
+			this.clickedElements.push(id);
 		}
-
-		return colorClass;
 	}
 }
 

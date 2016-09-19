@@ -25,9 +25,10 @@ class WordruController extends Controller
      * Return word and transfer if params $id not null
      * Return random word and four variant transfer if $id is null
      * @param null $id
+     * @param null $passed
      * @return string
      */
-    public function actionIndex($id = null)
+    public function actionIndex($id = null, $passed = null)
     {
         if($id) {
             return json_encode(
@@ -35,7 +36,7 @@ class WordruController extends Controller
                     ->withId($id)
                     ->with('engs')
                     ->asArray()
-                    ->all(),
+                    ->one(),
                 JSON_UNESCAPED_UNICODE
             );
         }
