@@ -1,7 +1,11 @@
+import Helpers from '../../system/helpers';
+
 export default class GreetingController {
 	constructor($location, $cookies, TestService) {
 		this.$location = $location;
 		this.$cookies = $cookies;
+
+		Helpers.clearSystemCookie($cookies);
 
 		this.nameMaxLength = 255;
 		this.username = "";

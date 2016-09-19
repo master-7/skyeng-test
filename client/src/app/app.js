@@ -7,6 +7,9 @@ import ngCookies from 'angular-cookies';
 import 'angular-material/angular-material.css';
 import '../style/app.css';
 
+import CONSTANTS from './system/constants';
+import Helpers from './system/helpers';
+
 import routing from './config/app.config';
 
 //Import modules
@@ -37,6 +40,22 @@ let systemModules = [
 const MODULE_NAME = 'app';
 
 angular.module(MODULE_NAME, systemModules.concat(modules))
-	.config(routing);
+	.config(routing)
+	.run(function ($rootScope, $state, $mdToast, $cookies) {
+		Helpers.clearSystemCookie($cookies);
+
+		$rootScope.$on('$stateChangeError', (event, toState, toParams, fromState, fromParams, error) => {
+			switch (error) {
+				case CONSTANTS.ERRORS.USER_NOT_EXISTS:
+					$state.go("greetings");
+					$mdToast.show(
+						$mdToast.simple()
+							.position("top right")
+							.textContent('Вы не представились!')
+					);
+					break;
+			}
+		});
+});
 
 export default MODULE_NAME;
