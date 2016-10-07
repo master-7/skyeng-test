@@ -1,7 +1,7 @@
 Backend is the yii2 frameworks
 
 # Build the server
-$ cd server
+$ cd /path/to/project/server
 
 # install the dependencies with composer
 $ composer install
@@ -14,6 +14,9 @@ $ php yii serve --port=8888
 
 Frontend made on the basis https://github.com/preboot/angular-webpack.git
 # angular-webpack
+
+# Build the client 
+$ cd /path/to/project/client
 
 # install the dependencies with npm
 $ npm install
